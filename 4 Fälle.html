@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jojo und die vier Fälle</title>
+<style>
+:root{--bark:#5a3e26;--ink:#3b2a1a;--moss:#4f7a2f;--leafbg:#dcebbd;--fur:#b98e5c;--furbg:#f0dfc0;--page:#e6efd3;--gold:#e0a826;--ok:#2e7d32;--okbg:#d3ecc4;--bad:#a8402c;--badbg:#f6dbd0;
+--k1:#1b3a8c;--k1b:#d5def7;--k2:#3fa9e0;--k2b:#dcf1fc;--k3:#e8b900;--k3b:#fff4bf;--k4:#ee7d0e;--k4b:#fde3c7;color-scheme:light}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"Avenir Next","Trebuchet MS",ui-rounded,system-ui,sans-serif;font-size:1.3rem;line-height:1.45;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);-webkit-text-size-adjust:100%;touch-action:manipulation}
+main{max-width:75rem;margin:0 auto;padding:1.1rem 1.5rem 3rem}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.k1{--c:var(--k1);--cb:var(--k1b)}.k2{--c:var(--k2);--cb:var(--k2b)}.k3{--c:var(--k3);--cb:var(--k3b)}.k4{--c:var(--k4);--cb:var(--k4b)}
+header{display:flex;align-items:flex-end;gap:1.2rem;margin-bottom:.6rem}
+header svg{width:8.4rem;flex:none;margin-top:-1rem}
+h1{font-size:2.4rem;line-height:1.1;margin:0 0 .2rem;color:var(--bark)}
+header p{margin:0;font-size:1.25rem}
+.btn{min-height:3.5rem;padding:.5rem 1.5rem;border-radius:1.1rem;border:3px solid var(--bark);background:#fff;font-weight:700}
+.btn.pri{background:var(--bark);color:#fff}
+.btn:disabled{opacity:.5}
+.btn:focus-visible,input:focus-visible,.mode:focus-visible,.wd:focus-visible{outline:4px solid var(--gold);outline-offset:3px}
+.row{display:flex;gap:.9rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.lead{font-weight:700;margin:.4rem 0}
+.modes{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(21rem,1fr));margin:.8rem 0}
+.mode{text-align:left;padding:1rem 1.2rem;border-radius:1.4rem;border:3px solid var(--bark);background:#fff;display:flex;gap:.9rem;align-items:center}
+.mode i{font-style:normal;font-size:2.6rem;flex:none}
+.mode b{display:block;font-size:1.6rem;line-height:1.2}
+.mode span{font-size:1.15rem;display:block}
+.mode:nth-child(odd){background:var(--furbg)}.mode:nth-child(even){background:var(--leafbg)}
+.tools{display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap;margin-bottom:.5rem}
+.leaves{display:flex;gap:.5rem;flex-wrap:wrap}
+.leaf{width:1.5rem;height:1.5rem;border-radius:0 100% 0 100%;border:3px solid var(--moss);background:#fff}
+.leaf.now{background:var(--gold);border-color:var(--bark)}
+.leaf.done{background:var(--fur);border-color:var(--bark)}
+.leaf.star{background:var(--moss)}
+.task{font-size:1.5rem;margin:.4rem 0 .6rem}
+.chip{display:inline-block;padding:.1rem .8rem;margin:.15rem .25rem .15rem 0;border-radius:1rem;border:2px solid var(--c,var(--bark));background:var(--cb,#fff);font-weight:700;font-size:1.1rem}
+.sentence,.sentence2{font-size:2rem;line-height:2.4;padding:.6rem 0}
+.sentence2{display:flex;flex-wrap:wrap;align-items:center;gap:.3rem .6rem}
+.wd{font:inherit;background:none;border:0;border-bottom:.4rem solid transparent;border-radius:.5rem .5rem 0 0;padding:0 .25rem;margin:0 .05rem;color:inherit}
+.wd:active{background:var(--leafbg)}
+.wd.sel{border-bottom-color:var(--c);background:var(--cb)}
+.wd.u1{border-bottom-color:var(--k1)}.wd.u2{border-bottom-color:var(--k2)}.wd.u3{border-bottom-color:var(--k3)}.wd.u4{border-bottom-color:var(--k4)}
+.wd.tg{font-weight:700;background:var(--cb)}
+#in2,.in3{font:inherit;font-size:1.7rem;height:3.6rem;padding:0 1rem;border:3px solid var(--bark);border-radius:1rem;background:#fff;color:var(--ink);min-width:0}
+#in2{width:15rem;text-align:center}
+#in2.ok,.in3.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok);font-weight:700}
+.in3.bad{background:var(--badbg);border-color:var(--bad)}
+.tr.th{background:none;border-left-color:transparent;padding-top:0;padding-bottom:0;text-align:center;color:var(--bark)}
+.tr{display:grid;grid-template-columns:12rem 1fr 1fr;gap:.8rem;align-items:center;margin-bottom:.6rem;padding:.4rem .6rem;border-radius:1rem;background:var(--cb);border-left:.6rem solid var(--c)}
+.tr .lab small{display:block;font-size:1.05rem}
+.in3,.given3{width:100%}
+.given3{font-size:1.7rem;font-weight:700;padding:.3rem 1rem}
+.gap{display:inline-block;min-width:5rem;text-align:center;border-bottom:.35rem dashed #a09378;font-weight:700}
+.gap.ok{border-bottom-style:solid;border-color:var(--c);background:var(--cb)}
+.bt{min-width:9rem;font-size:2rem}
+.bt.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.bt.no{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.dt{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:.8rem}
+.hd{text-align:center;color:var(--bark);font-size:1.15rem}
+.cell{min-height:3.5rem;display:flex;align-items:center;justify-content:center;padding:.2rem .6rem;border-radius:.9rem;border:3px solid var(--bark);text-align:center;font-weight:700}
+.cell.empty{border-style:dashed}
+.cell.k1,.cell.k2,.cell.k3,.cell.k4{border-color:var(--c);background:var(--cb)}
+.pool{display:flex;gap:.7rem;flex-wrap:wrap;min-height:4rem;margin-bottom:.8rem;padding:.8rem;border-radius:1rem;background:#fff8e1;border:3px dashed var(--gold)}
+.tile{padding:.4rem 1.1rem;border-radius:.9rem;border:3px solid var(--moss);background:var(--leafbg);font-weight:700;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}
+.tile.pick{background:var(--gold);border-color:var(--bark)}
+.tile.lift{opacity:.35}
+.ghost{position:fixed;z-index:50;pointer-events:none;box-shadow:0 .3rem .8rem rgba(0,0,0,.3);margin:0}
+.say{display:flex;gap:.9rem;align-items:center;margin:.4rem 0 1rem}
+.say svg{width:4.6rem;flex:none}
+.fb{flex:1;position:relative;min-height:4.2rem;padding:.7rem 1.1rem;border-radius:1.4rem;border:3px solid var(--bark);background:#fff;font-size:1.35rem}
+.fb::before{content:"";position:absolute;left:-.9rem;top:50%;margin-top:-.6rem;width:1.1rem;height:1.1rem;background:inherit;border-left:3px solid var(--bark);border-bottom:3px solid var(--bark);transform:rotate(45deg)}
+.fb.good{background:var(--okbg);border-color:var(--ok)}.fb.nope{background:var(--badbg);border-color:var(--bad)}
+.fb.good::before{border-color:var(--ok)}.fb.nope::before{border-color:var(--bad)}
+@keyframes sh{20%{transform:translateX(-.5rem)}60%{transform:translateX(.5rem)}}
+.shake{animation:sh .35s}
+@media (prefers-reduced-motion:reduce){.shake{animation:none}}
+#end{text-align:center;padding-top:.6rem}
+#end svg{width:11rem}
+.big{font-size:4.4rem;line-height:1;color:var(--gold);margin:.6rem 0}
+@media (max-width:700px){h1{font-size:1.8rem}header svg{width:5.6rem}.tr{grid-template-columns:7rem 1fr 1fr}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="face" viewBox="0 0 120 110">
+    <ellipse cx="60" cy="58" rx="48" ry="42" fill="#c9a06a"/>
+    <ellipse cx="60" cy="64" rx="35" ry="29" fill="#f1e2c6"/>
+    <ellipse cx="42" cy="58" rx="13" ry="9" fill="#5a3e26" transform="rotate(-25 42 58)"/>
+    <ellipse cx="78" cy="58" rx="13" ry="9" fill="#5a3e26" transform="rotate(25 78 58)"/>
+    <circle cx="43" cy="59" r="4.5" fill="#fff"/><circle cx="77" cy="59" r="4.5" fill="#fff"/>
+    <circle cx="44" cy="60" r="2.2" fill="#222"/><circle cx="76" cy="60" r="2.2" fill="#222"/>
+    <ellipse cx="60" cy="71" rx="7" ry="4.5" fill="#3b2a1a"/>
+    <path d="M47 82 Q60 94 73 82" stroke="#3b2a1a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  </symbol>
+</svg>
+<main>
+<header>
+  <svg viewBox="0 0 160 140" aria-hidden="true">
+    <line x1="38" y1="56" x2="26" y2="10" stroke="#b98e5c" stroke-width="15" stroke-linecap="round"/>
+    <line x1="122" y1="56" x2="134" y2="10" stroke="#b98e5c" stroke-width="15" stroke-linecap="round"/>
+    <use href="#face" x="20" y="26" width="120" height="110"/>
+    <rect x="0" y="0" width="160" height="16" rx="8" fill="#6b4a2f"/>
+    <path d="M118 14 q14 -2 22 10 q-14 4 -22 -10z" fill="#4f7a2f"/>
+    <path d="M10 14 q10 -2 16 8 q-10 3 -16 -8z" fill="#6f9a3f"/>
+  </svg>
+  <div><h1>Jojo und die vier Fälle</h1><p>Nominativ, Genitiv, Dativ und Akkusativ üben.</p></div>
+</header>
+
+<section id="menu">
+  <p class="lead">Wähle eine Übung:</p>
+  <div class="modes">
+    <button class="mode" data-m="1"><i>✏️</i><div><b>Satzglied unterstreichen</b><span>Unterstreiche das ganze Satzglied im verlangten Fall.</span></div></button>
+    <button class="mode" data-m="2"><i>✍️</i><div><b>Satzglied einsetzen</b><span>Schreibe das Nomen im richtigen Fall in den Satz.</span></div></button>
+    <button class="mode" data-m="3"><i>📋</i><div><b>Fälle-Tabelle</b><span>Setze ein Nomen in alle vier Fälle, in Einzahl und Mehrzahl.</span></div></button>
+    <button class="mode" data-m="4"><i>🎯</i><div><b>dem, den oder des?</b><span>Wähle den richtigen Artikel.</span></div></button>
+    <button class="mode" data-m="5"><i>🧩</i><div><b>Fälle ziehen</b><span>Ziehe Nummer, Name und Frage an die richtige Stelle.</span></div></button>
+  </div>
+</section>
+
+<section id="play" hidden>
+  <div class="tools"><button class="btn" id="back">‹ Übungen</button><div class="leaves" id="dots" aria-hidden="true"></div></div>
+  <p class="task" id="q"></p>
+  <div id="stage"></div>
+  <div class="say"><svg viewBox="0 0 120 110" aria-hidden="true"><use href="#face"/></svg><div class="fb" id="fb" role="status" aria-live="polite"></div></div>
+  <div class="row">
+    <button class="btn pri" id="chk" hidden>Prüfen</button>
+    <button class="btn" id="tip" hidden>Tipp</button>
+    <button class="btn" id="sol" hidden>Lösung zeigen</button>
+    <button class="btn pri" id="nxt" hidden>Weiter ›</button>
+  </div>
+</section>
+
+<section id="end" hidden>
+  <svg viewBox="0 0 120 110" aria-hidden="true"><use href="#face"/></svg>
+  <h1>Jojo ist stolz auf euch!</h1>
+  <div class="big" id="stars"></div>
+  <p id="score"></p>
+  <div class="row" style="justify-content:center"><button class="btn pri" id="again">Noch eine Runde</button><button class="btn" id="home">Andere Übung</button></div>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+/* Skalierung über die Grundschriftgröße (rem): iPad bleibt bei 100 %, große Bildschirme wachsen mit */
+function fit(){const z=Math.max(1,Math.min(innerWidth/1200,innerHeight/850));document.documentElement.style.fontSize=(16*z)+"px"}
+fit();addEventListener("resize",fit);addEventListener("orientationchange",fit);
+
+const CASES=[null,{n:"Nominativ",q:"Wer oder was?",o:"1. Fall"},{n:"Genitiv",q:"Wessen?",o:"2. Fall"},{n:"Dativ",q:"Wem?",o:"3. Fall"},{n:"Akkusativ",q:"Wen oder was?",o:"4. Fall"}];
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+const norm=s=>s.trim().toLowerCase().replace(/\s+/g," ").replace(/[.,!?]/g,"");
+function pickN(pool,seen,n){let un=pool.filter(x=>!seen.has(x));if(un.length<n){seen.clear();un=pool.slice()}const r=shuffle(un).slice(0,n);r.forEach(x=>seen.add(x));return r}
+
+/* ---------- Daten ---------- */
+// Spiel 1: {Fall|Satzglied}
+const S1=[
+"{1|Der kleine Hund} frisst {4|einen Knochen}.",
+"{1|Jojo} gibt {3|dem Frosch} {4|ein grünes Blatt}.",
+"{1|Der Hund} hilft {3|dem Kind}.",
+"{1|Das Fell} {2|des Faultiers} ist weich.",
+"{1|Der Lehrer} liest {3|den Kindern} {4|eine Geschichte} vor.",
+"{1|Mia} schenkt {3|ihrer Oma} {4|einen Blumenstrauß}.",
+"{1|Der Bruder} {2|des Mädchens} spielt {4|Fußball}.",
+"{1|Das Buch} {2|meiner Freundin} liegt dort.",
+"{1|Der Hund} sieht {4|die Katze}.",
+"{1|Jojo} dankt {3|der Lehrerin}.",
+"{1|Die Kinder} streicheln {4|das Faultier}.",
+"{1|Der Frosch} folgt {3|dem Hund}.",
+"{1|Der Mantel} {2|des Lehrers} hängt dort.",
+"{1|Mini} kauft {3|ihrem Bruder} {4|ein Eis}.",
+"{1|Der Schüler} putzt {4|die Tafel}.",
+"{1|Die Mutter} {2|des Jungen} backt {4|einen Kuchen}.",
+"{1|Die Lehrerin} zeigt {3|den Kindern} {4|ein Bild}.",
+"{1|Das Haus} {2|der Familie} ist groß.",
+"{1|Das Blatt} schmeckt {3|dem Faultier}.",
+"{1|Der Zahn} {2|des Hundes} ist spitz.",
+"{1|Die Katze} jagt {4|die Maus}.",
+"{1|Mama} backt {3|der Klasse} {4|einen Kuchen}.",
+"{1|Der Frosch} fängt {4|eine dicke Fliege}.",
+"{1|Die Kinder} gratulieren {3|dem Lehrer}.",
+"{1|Die Farbe} {2|des Faultiers} ist braun.",
+"{1|Der Ball} gehört {3|dem Jungen}.",
+"{1|Jojo} umarmt {4|den Ast}.",
+"{1|Der Lehrer} gibt {3|dem Schüler} {4|das Heft}.",
+"{1|Das Faultier} frisst {4|das Blatt} {2|des Baumes}.",
+"{1|Der Hirte} sucht {4|das Schaf}.",
+"{1|Die Schülerin} hilft {3|dem Nachbarn}.",
+"{1|Der Opa} erzählt {3|den Enkeln} {4|eine Geschichte}.",
+"{1|Die Eltern} {2|des Mädchens} danken {3|der Lehrerin}.",
+"{1|Der Tiger} beobachtet {4|den Affen}.",
+"{1|Der Bär} gehört {3|dem Zoo}.",
+"{1|Die Lehrerin} lobt {4|die Klasse}.",
+"{1|Das Spielzeug} {2|des Hundes} liegt dort.",
+"{1|Das Pferd} trägt {4|den Reiter}.",
+"{1|Der Kuchen} schmeckt {3|den Kindern}.",
+"{1|Der Vogel} baut {4|ein Nest}."
+];
+// Spiel 2: [Satz mit ___, Nomen (1. Fall), gesuchter Fall, Lösung, weitere richtige Lösungen]
+const S2=[
+["Jojo sieht ___.","der Hund",4,"den Hund"],
+["Jojo hilft ___.","die Katze",3,"der Katze"],
+["Das Fell ___ ist weich.","das Faultier",2,"des Faultiers"],
+["___ frisst ein Blatt.","das Faultier",1,"Das Faultier"],
+["Mia gibt ___ ein Eis.","der Junge",3,"dem Jungen"],
+["Die Mutter liest ___ ein Buch vor.","das Kind",3,"dem Kind"],
+["Der Hund jagt ___.","die Katze",4,"die Katze"],
+["Das Haus ___ ist groß.","die Familie",2,"der Familie"],
+["Ich sehe ___.","der Frosch",4,"den Frosch"],
+["Der Schwanz ___ wackelt.","der Hund",2,"des Hundes",["des Hunds"]],
+["Jojo dankt ___.","der Lehrer",3,"dem Lehrer"],
+["___ schläft tief.","der Frosch",1,"Der Frosch"],
+["Lena schenkt ___ eine Blume.","die Oma",3,"der Oma"],
+["Der Lehrer lobt ___.","die Schülerin",4,"die Schülerin"],
+["Die Tasche ___ liegt dort.","das Mädchen",2,"des Mädchens"],
+["Mini fängt ___.","die Fliege",4,"die Fliege"],
+["Der Ball gehört ___.","der Junge",3,"dem Jungen"],
+["Die Ohren ___ sind lang.","der Hase",2,"des Hasen"],
+["Jojo hilft ___.","die Kinder",3,"den Kindern"],
+["Jojo sieht ___.","die Kinder",4,"die Kinder"],
+["Jojo frisst ___.","das frische Blatt",4,"das frische Blatt"],
+["Mia hilft ___.","der alte Mann",3,"dem alten Mann"],
+["Das Fell ___ glänzt.","das kleine Faultier",2,"des kleinen Faultiers"],
+["___ lacht laut.","die Lehrerin",1,"Die Lehrerin"],
+["Der Opa füttert ___.","das Pferd",4,"das Pferd"],
+["Das Futter ___ schmeckt gut.","das Pferd",2,"des Pferdes",["des Pferds"]],
+["Die Kinder streicheln ___.","das Faultier",4,"das Faultier"],
+["Der Lehrer hilft ___.","der Schüler",3,"dem Schüler"],
+["___ hängt im Baum.","das Faultier",1,"Das Faultier"],
+["Der Zahn ___ ist spitz.","der Löwe",2,"des Löwen"],
+["Mama backt ___ einen Kuchen.","die Klasse",3,"der Klasse"],
+["Jojo füttert ___.","die Vögel",4,"die Vögel"],
+["Die Lehrerin zeigt ___ ein Bild.","die Kinder",3,"den Kindern"],
+["Die Mütze ___ ist rot.","der Junge",2,"des Jungen"],
+["Das Spielzeug ___ liegt dort.","die Kinder",2,"der Kinder"],
+["Der Hund folgt ___.","die Lehrerin",3,"der Lehrerin"],
+["___ bellen laut.","die Hunde",1,"Die Hunde"],
+["Ich putze ___.","die Tafel",4,"die Tafel"],
+["Mia schenkt ___ ein Buch.","der Freund",3,"dem Freund"],
+["Die Farbe ___ ist grün.","der Frosch",2,"des Frosches",["des Froschs"]]
+];
+// Spiel 3: [Nom. Sg., Gen. Sg., Dat. Sg., Akk. Sg., Nom. Pl., Gen. Pl., Dat. Pl., weiterer richtiger Gen. Sg.]  (Akk. Pl. = Nom. Pl.)
+const N3=[
+["der Hund","des Hundes","dem Hund","den Hund","die Hunde","der Hunde","den Hunden","des Hunds"],
+["die Katze","der Katze","der Katze","die Katze","die Katzen","der Katzen","den Katzen"],
+["das Faultier","des Faultiers","dem Faultier","das Faultier","die Faultiere","der Faultiere","den Faultieren"],
+["der Frosch","des Frosches","dem Frosch","den Frosch","die Frösche","der Frösche","den Fröschen","des Froschs"],
+["das Kind","des Kindes","dem Kind","das Kind","die Kinder","der Kinder","den Kindern","des Kinds"],
+["der Junge","des Jungen","dem Jungen","den Jungen","die Jungen","der Jungen","den Jungen"],
+["die Lehrerin","der Lehrerin","der Lehrerin","die Lehrerin","die Lehrerinnen","der Lehrerinnen","den Lehrerinnen"],
+["der Hase","des Hasen","dem Hasen","den Hasen","die Hasen","der Hasen","den Hasen"],
+["das Mädchen","des Mädchens","dem Mädchen","das Mädchen","die Mädchen","der Mädchen","den Mädchen"],
+["der Baum","des Baumes","dem Baum","den Baum","die Bäume","der Bäume","den Bäumen","des Baums"],
+["die Schule","der Schule","der Schule","die Schule","die Schulen","der Schulen","den Schulen"],
+["das Haus","des Hauses","dem Haus","das Haus","die Häuser","der Häuser","den Häusern"],
+["der Löwe","des Löwen","dem Löwen","den Löwen","die Löwen","der Löwen","den Löwen"],
+["die Maus","der Maus","der Maus","die Maus","die Mäuse","der Mäuse","den Mäusen"],
+["der Lehrer","des Lehrers","dem Lehrer","den Lehrer","die Lehrer","der Lehrer","den Lehrern"],
+["das Blatt","des Blattes","dem Blatt","das Blatt","die Blätter","der Blätter","den Blättern","des Blatts"],
+["der Vogel","des Vogels","dem Vogel","den Vogel","die Vögel","der Vögel","den Vögeln"],
+["die Blume","der Blume","der Blume","die Blume","die Blumen","der Blumen","den Blumen"],
+["das Pferd","des Pferdes","dem Pferd","das Pferd","die Pferde","der Pferde","den Pferden","des Pferds"],
+["der Schüler","des Schülers","dem Schüler","den Schüler","die Schüler","der Schüler","den Schülern"],
+["die Schülerin","der Schülerin","der Schülerin","die Schülerin","die Schülerinnen","der Schülerinnen","den Schülerinnen"],
+["das Buch","des Buches","dem Buch","das Buch","die Bücher","der Bücher","den Büchern","des Buchs"],
+["der Ball","des Balles","dem Ball","den Ball","die Bälle","der Bälle","den Bällen","des Balls"],
+["die Tasche","der Tasche","der Tasche","die Tasche","die Taschen","der Taschen","den Taschen"],
+["das Auto","des Autos","dem Auto","das Auto","die Autos","der Autos","den Autos"],
+["der Bär","des Bären","dem Bären","den Bären","die Bären","der Bären","den Bären"],
+["die Tafel","der Tafel","der Tafel","die Tafel","die Tafeln","der Tafeln","den Tafeln"],
+["das Heft","des Heftes","dem Heft","das Heft","die Hefte","der Hefte","den Heften","des Hefts"],
+["der Affe","des Affen","dem Affen","den Affen","die Affen","der Affen","den Affen"],
+["die Familie","der Familie","der Familie","die Familie","die Familien","der Familien","den Familien"],
+["das Schaf","des Schafes","dem Schaf","das Schaf","die Schafe","der Schafe","den Schafen","des Schafs"],
+["der Fisch","des Fisches","dem Fisch","den Fisch","die Fische","der Fische","den Fischen","des Fischs"],
+["der Tiger","des Tigers","dem Tiger","den Tiger","die Tiger","der Tiger","den Tigern"]
+];
+// Spiel 4: [Satz mit ___, Artikel, Fall]
+const S4=[
+["Jojo hilft ___ Hund.","dem",3],["Jojo sieht ___ Hund.","den",4],["Das Fell ___ Hundes ist weich.","des",2],
+["Mia schenkt ___ Bruder ein Buch.","dem",3],["Mia besucht ___ Bruder.","den",4],["Der Hund folgt ___ Jungen.","dem",3],
+["Der Hund jagt ___ Hasen.","den",4],["Die Mütze ___ Jungen ist rot.","des",2],["Der Lehrer lobt ___ Schüler.","den",4],
+["Der Lehrer hilft ___ Schüler.","dem",3],["Die Kinder danken ___ Lehrer.","dem",3],["Das Auto ___ Lehrers ist neu.","des",2],
+["Jojo gibt ___ Frosch ein Blatt.","dem",3],["Jojo füttert ___ Frosch.","den",4],["Das Ei ___ Vogels liegt im Nest.","des",2],
+["Mia streichelt ___ Hund.","den",4],["Jojo hilft ___ Kindern.","den",3],["Der Hund folgt ___ Kindern.","den",3],
+["Das Spielzeug ___ Kindes liegt dort.","des",2],["Der Hirte hilft ___ Schaf.","dem",3],["Der Opa liest ___ Enkel ein Buch vor.","dem",3],
+["Die Mutter ruft ___ Sohn.","den",4],["Das Zimmer ___ Mädchens ist bunt.","des",2],["Jojo gibt ___ Mädchen ein Blatt.","dem",3],
+["Der Bär frisst ___ Fisch.","den",4],["Die Katze gehört ___ Nachbarn.","dem",3],["Das Bellen ___ Hundes ist laut.","des",2],
+["Jojo hilft ___ Vogel.","dem",3],["Mia sucht ___ Ball.","den",4],["Der Hund gehört ___ Mädchen.","dem",3],
+["Die Farbe ___ Autos ist rot.","des",2],["Jojo dankt ___ Arzt.","dem",3],["Der Löwe jagt ___ Affen.","den",4],
+["Das Haus ___ Lehrers ist klein.","des",2],["Die Kinder folgen ___ Lehrer.","dem",3],["Mia füttert ___ Hasen.","den",4]
+];
+// Spiel 5
+const TL=[null,["1. Fall","Nominativ","Wer oder was?"],["2. Fall","Genitiv","Wessen?"],["3. Fall","Dativ","Wem?"],["4. Fall","Akkusativ","Wen oder was?"]];
+
+/* ---------- Ablauf ---------- */
+const POOL={1:S1,2:S2,3:N3,4:S4},SEEN={1:new Set(),2:new Set(),3:new Set(),4:new Set()};
+let st={};
+const head=x=>`Aufgabe ${st.i+1} von ${st.n}: ${x}`;
+function leaves(){$("dots").innerHTML=Array.from({length:st.n},(_,k)=>`<span class="leaf ${k<st.res.length?(st.res[k]?'star':'done'):k===st.i?'now':''}"></span>`).join("")}
+function msg(t,k){$("fb").textContent=t;$("fb").className="fb "+(k||"")}
+function shake(el){el.classList.remove("shake");void el.offsetWidth;el.classList.add("shake")}
+function show(id){["menu","play","end"].forEach(s=>$(s).hidden=s!==id);window.scrollTo(0,0)}
+function start(m){
+  st={m:m,i:0,n:m===3?5:m===5?3:10,res:[],stars:0};
+  st.items=m===5?null:pickN(POOL[m],SEEN[m],st.n);
+  show("play");load();
+}
+function load(){
+  st.tries=0;st.done=false;
+  ["chk","tip","sol","nxt"].forEach(b=>$(b).hidden=true);
+  $("nxt").textContent=st.i===st.n-1?"Fertig ›":"Weiter ›";
+  msg("Los geht’s! Jojo schaut dir gemütlich zu.");
+  [0,load1,load2,load3,load4,load5][st.m]();leaves();
+}
+function done(star,text){
+  st.done=true;st.res.push(star);if(star)st.stars++;
+  msg(text,"good");["chk","tip","sol"].forEach(b=>$(b).hidden=true);$("nxt").hidden=false;leaves();
+}
+function wrongFb(text){st.tries++;msg(text,"nope");shake($("stage"));if(st.tries>=2)$("sol").hidden=false}
+
+/* Spiel 1: Satzglied unterstreichen */
+const cap=c=>`${CASES[c].n} (${CASES[c].o})`;
+const ATTR='type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"';
+function parse(str){
+  const segs=[],words=[];let last=0,sid=0,m;const re=/\{(\d)\|([^}]+)\}/g;
+  const plain=t=>t.split(" ").filter(Boolean).forEach(w=>{const q=w.match(/^(.*?)([.,!?]*)$/);
+    if(q[1]===""&&words.length)words[words.length-1].p+=q[2];else words.push({w:q[1],p:q[2],s:-1})});
+  while((m=re.exec(str))){plain(str.slice(last,m.index));segs.push({c:+m[1],t:m[2]});m[2].split(" ").forEach(w=>words.push({w:w,p:"",s:sid}));sid++;last=re.lastIndex}
+  plain(str.slice(last));return {words:words,segs:segs};
+}
+function load1(){
+  const s=parse(st.items[st.i]),k=rnd(0,s.segs.length-1),c=s.segs[k].c;
+  st.cur={s:s,k:k,c:c};st.sel=new Set();
+  $("q").innerHTML=head(`Unterstreiche das ganze Satzglied im <b>${cap(c)}</b>.`);
+  $("stage").innerHTML=`<div class="sentence k${c}" id="sentence">${s.words.map((o,i)=>`<button class="wd" data-i="${i}">${o.w}</button>${o.p}`).join(" ")}</div><div id="sum"></div>`;
+  $("chk").hidden=false;$("tip").hidden=false;
+}
+function chk1(){
+  const c=st.cur,tg=new Set();c.s.words.forEach((w,i)=>{if(w.s===c.k)tg.add(i)});
+  if(!st.sel.size){msg("Tippe zuerst auf die Wörter, die du unterstreichen willst.");return}
+  const miss=[...tg].some(i=>!st.sel.has(i)),extra=[...st.sel].some(i=>!tg.has(i));
+  if(!miss&&!extra)return fin1(st.tries===0,"Richtig!");
+  wrongFb(miss&&!extra?"Fast! Es fehlt noch ein Wort, das zum Satzglied gehört.":extra&&!miss?"Fast! Ein unterstrichenes Wort gehört nicht zum Satzglied.":`Noch nicht. Stelle die Frage „${CASES[c.c].q}“ und frage nach dem ganzen Satzglied.`);
+}
+function fin1(star,pre){
+  const c=st.cur;
+  document.querySelectorAll(".wd").forEach(b=>{const w=c.s.words[+b.dataset.i];b.disabled=true;b.classList.remove("sel");if(w.s>=0)b.classList.add("u"+c.s.segs[w.s].c);if(w.s===c.k)b.classList.add("tg")});
+  $("sum").innerHTML=c.s.segs.map(g=>`<span class="chip k${g.c}">${CASES[g.c].n} (${CASES[g.c].q}): ${g.t}</span>`).join(" ");
+  done(star,`${pre} „${c.s.segs[c.k].t}“ steht im ${CASES[c.c].n}. Frage: ${CASES[c.c].q}`);
+}
+
+/* Spiel 2: Satzglied einsetzen */
+function load2(){
+  const [txt,nom,c,ans,alt]=st.items[st.i],p=txt.split("___");st.cur={c:c,ans:ans,alts:alt||[]};
+  $("q").innerHTML=head(`Setze das Nomen im <b>${cap(c)}</b> in die Lücke.`);
+  $("stage").innerHTML=`<div class="sentence2 k${c}"><span>${p[0]}</span><input id="in2" ${ATTR} enterkeyhint="done" aria-label="Satzglied"><span>${p[1]}</span></div><div class="k${c}"><span class="chip" style="--c:var(--bark);--cb:var(--furbg)">Nomen: ${nom}</span><span class="chip">${cap(c)}</span></div>`;
+  $("in2").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();chk2()}});
+  $("chk").hidden=false;$("tip").hidden=false;
+}
+function fill2(){const i=$("in2");i.readOnly=true;i.className="ok";i.value=st.cur.ans}
+function chk2(){
+  if(st.done)return;const c=st.cur,v=norm($("in2").value);
+  if(!v){msg("Schreibe zuerst etwas in die Lücke.");return}
+  if([c.ans,...c.alts].map(norm).includes(v)){fill2();done(st.tries===0,`Richtig! ${CASES[c.c].n} (${CASES[c.c].q}): ${c.ans}.`)}
+  else wrongFb(v.split(" ")[0]===norm(c.ans).split(" ")[0]?"Der Artikel stimmt. Prüfe noch die Endungen.":`Noch nicht. Welcher Artikel gehört in den ${CASES[c.c].n}?`);
+}
+
+/* Spiel 3: Fälle-Tabelle (Einzahl und Mehrzahl, nur bestimmte Artikel) */
+function load3(){
+  const n=st.items[st.i],rows=[1,2,3,4].map(r=>({s:n[r-1],p:[n[4],n[5],n[6],n[4]][r-1],alt:r===2&&n[7]?[n[7]]:[]}));
+  st.cur={rows:rows};
+  $("q").innerHTML=head(`Schreibe „<b>${rows[0].s}</b>“ und „<b>${rows[0].p}</b>“ in alle Fälle. Der Nominativ ist schon da.`);
+  let h='<div class="tr th"><span></span><b>Einzahl</b><b>Mehrzahl</b></div>';
+  [1,2,3,4].forEach(r=>{const x=rows[r-1];
+    h+=`<div class="tr k${r}"><div class="lab"><b>${CASES[r].n}</b><small>${CASES[r].q}</small></div>`+(r===1?`<div class="given3">${x.s}</div><div class="given3">${x.p}</div>`:`<input class="in3" id="i3${r}s" ${ATTR} aria-label="${CASES[r].n} Einzahl"><input class="in3" id="i3${r}p" ${ATTR} aria-label="${CASES[r].n} Mehrzahl">`)+"</div>"});
+  $("stage").innerHTML=h;
+  const ins=[...$("stage").querySelectorAll(".in3")];
+  ins.forEach((i,k)=>i.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();ins[k+1]?ins[k+1].focus():chk3()}}));
+  $("chk").hidden=false;
+}
+function chk3(){
+  if(st.done)return;let all=true;
+  for(let r=2;r<=4;r++)["s","p"].forEach(k=>{
+    const i=$("i3"+r+k),g=st.cur.rows[r-1],goods=k==="s"?[g.s,...g.alt]:[g.p];
+    if(goods.map(norm).includes(norm(i.value))){i.readOnly=true;i.className="in3 ok"}else{all=false;i.className="in3 bad"}});
+  if(all)done(st.tries===0,"Richtig! Alle Fälle in Einzahl und Mehrzahl stimmen.");
+  else wrongFb("Die roten Felder stimmen noch nicht. Stelle dir die Fragen: Wessen? Wem? Wen oder was?");
+}
+$("stage").addEventListener("input",e=>{if(e.target.classList.contains("in3"))e.target.classList.remove("bad")});
+
+/* Spiel 4: dem, den oder des */
+function load4(){
+  const [txt,ans,c]=st.items[st.i],p=txt.split("___");st.cur={ans:ans,c:c};
+  $("q").innerHTML=head("Welcher Artikel passt in die Lücke?");
+  $("stage").innerHTML=`<div class="sentence2"><span>${p[0]}</span><span class="gap" id="gap4">&nbsp;</span><span>${p[1]}</span></div><div class="row">${["dem","den","des"].map(w=>`<button class="btn bt" data-w="${w}">${w}</button>`).join("")}</div>`;
+  $("tip").hidden=false;
+}
+function answer4(b){
+  const c=st.cur;if(b.disabled)return;
+  if(b.dataset.w===c.ans){
+    b.classList.add("ok");document.querySelectorAll(".bt").forEach(x=>x.disabled=true);$("gap4").textContent=c.ans;$("gap4").className="gap ok k"+c.c;
+    done(st.tries===0,`Richtig! Frage: „${CASES[c.c].q}“ – das ist der ${CASES[c.c].n}. Darum: ${c.ans}.`);
+  }else{b.classList.add("no");b.disabled=true;
+    wrongFb(st.tries===0?"Noch nicht. Welche Frage passt: Wessen? Wem? oder Wen?":`Noch nicht. Hier fragst du „${CASES[c.c].q}“.`)}
+}
+
+/* Spiel 5: ziehen */
+function load5(){
+  const tiles=[];let h='<div class="dt"><b class="hd">Fall</b><b class="hd">Name</b><b class="hd">Frage</b>';
+  shuffle([1,2,3,4]).forEach(r=>{const pc=rnd(0,2);for(let c=0;c<3;c++){const v=TL[r][c];
+    if(c===pc)h+=`<div class="cell pre k${r}" data-k="${r}">${v}</div>`;else{h+=`<div class="cell empty k${r}" data-v="${v}" data-k="${r}"></div>`;tiles.push(v)}}});
+  h+='</div><div class="pool" id="pool">'+shuffle(tiles).map(v=>`<div class="tile" data-v="${v}">${v}</div>`).join("")+"</div>";
+  st.left=tiles.length;st.mist=0;st.pick=null;
+  $("q").innerHTML=head("Ziehe jede Karte in das richtige Feld. Du kannst auch erst die Karte und dann das Feld antippen.");
+  $("stage").innerHTML=h;
+}
+function clearPick(){if(st.pick)st.pick.classList.remove("pick");st.pick=null}
+function drop(t,c){
+  if(t.dataset.v===c.dataset.v){
+    c.textContent=t.dataset.v;c.className="cell ok k"+c.dataset.k;t.remove();clearPick();
+    if(--st.left===0)done(st.mist===0,"Super! Alle Karten sitzen richtig.");
+  }else{st.mist++;shake(c);clearPick();msg("Das passt nicht in dieses Feld. Lies die Zeile noch einmal.","nope");if(st.mist>=3)$("sol").hidden=false}
+}
+let drag=null;
+$("stage").addEventListener("pointerdown",e=>{
+  const t=e.target.closest(".tile");if(!t||st.done)return;e.preventDefault();
+  drag={t:t,x:e.clientX,y:e.clientY,g:null};t.setPointerCapture(e.pointerId);
+});
+addEventListener("pointermove",e=>{
+  if(!drag)return;
+  if(!drag.g&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>8){
+    const r=drag.t.getBoundingClientRect(),g=drag.t.cloneNode(true);g.classList.add("ghost");g.style.width=r.width+"px";document.body.appendChild(g);
+    drag.g=g;drag.ox=e.clientX-r.left;drag.oy=e.clientY-r.top;drag.t.classList.add("lift");
+  }
+  if(drag.g){drag.g.style.left=(e.clientX-drag.ox)+"px";drag.g.style.top=(e.clientY-drag.oy)+"px"}
+});
+function endDrag(e,cancel){
+  if(!drag)return;const d=drag;drag=null;
+  if(d.g){d.g.remove();d.t.classList.remove("lift");
+    if(!cancel){const el=document.elementFromPoint(e.clientX,e.clientY),c=el&&el.closest(".cell.empty");if(c)drop(d.t,c)}}
+  else if(!cancel){if(st.pick===d.t)clearPick();else{clearPick();st.pick=d.t;d.t.classList.add("pick")}}
+}
+addEventListener("pointerup",e=>endDrag(e,false));
+addEventListener("pointercancel",e=>endDrag(e,true));
+
+/* gemeinsame Klicks */
+$("stage").addEventListener("click",e=>{
+  if(st.done)return;
+  if(st.m===1){const b=e.target.closest(".wd");if(b){const i=+b.dataset.i;b.classList.toggle("sel");st.sel.has(i)?st.sel.delete(i):st.sel.add(i)}}
+  else if(st.m===4){const b=e.target.closest(".bt");if(b)answer4(b)}
+  else if(st.m===5){const c=e.target.closest(".cell.empty");if(c&&st.pick)drop(st.pick,c)}
+});
+$("chk").onclick=()=>[0,chk1,chk2,chk3][st.m]();
+$("tip").onclick=()=>{
+  const c=st.cur;
+  msg(st.m===4?"Tipp: Frage nach dem Nomen. Wessen … ? → des. Wem … ? → dem. Wen … ? → den.":`Tipp: Die Frage lautet „${CASES[c.c].q}“`);
+};
+$("sol").onclick=()=>{
+  const c=st.cur;if(st.done)return;
+  if(st.m===1){st.sel=new Set(c.s.words.map((w,i)=>w.s===c.k?i:-1).filter(i=>i>=0));fin1(false,"Lösung:")}
+  else if(st.m===2){fill2();done(false,`Lösung: ${c.ans}.`)}
+  else if(st.m===3){for(let r=2;r<=4;r++){const g=c.rows[r-1];[["s",g.s],["p",g.p]].forEach(([k,v])=>{const i=$("i3"+r+k);i.value=v;i.className="in3 ok";i.readOnly=true})}done(false,"Lösung: So sehen alle Fälle in Einzahl und Mehrzahl aus.")}
+  else if(st.m===4){document.querySelectorAll(".bt").forEach(x=>{x.disabled=true;if(x.dataset.w===c.ans)x.classList.add("ok")});$("gap4").textContent=c.ans;$("gap4").className="gap ok k"+c.c;done(false,`Lösung: ${c.ans}. Hier fragst du „${CASES[c.c].q}“ – das ist der ${CASES[c.c].n}.`)}
+  else{document.querySelectorAll(".cell.empty").forEach(x=>{x.textContent=x.dataset.v;x.className="cell ok k"+x.dataset.k});document.querySelectorAll(".tile").forEach(x=>x.remove());clearPick();done(false,"Lösung: So gehören die Karten zusammen.")}
+};
+$("nxt").onclick=()=>{
+  if(st.i<st.n-1){st.i++;load();return}
+  const k=Math.round(st.stars/st.n*5);
+  $("stars").textContent="★".repeat(k)+"☆".repeat(5-k);
+  $("score").textContent=`${st.stars} von ${st.n} Aufgaben hast du gleich beim ersten Versuch richtig gelöst.`;
+  show("end");
+};
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>start(+b.dataset.m));
+$("back").onclick=$("home").onclick=()=>show("menu");
+$("again").onclick=()=>start(st.m);
+</script>
+</body>
+</html>
